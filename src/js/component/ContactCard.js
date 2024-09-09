@@ -1,0 +1,50 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLocationDot,
+  faPhone,
+  faEnvelope,
+  faPencil,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import ButtonToAdd from "./ButtonToAdd";
+
+const ContactCard = (props) => {
+  return (
+    <div className="row w-100 container border m-auto mt-1 p-1">
+      <div className="col-2">
+        <img
+          className="img-thumbnail photo mt-2 mb-2"
+          src="https://i.pinimg.com/564x/c6/89/95/c68995aa24906a1320b4d7d10aa374b2.jpg"
+        />
+      </div>
+      <div className="info col-8 mt-2 mb-2">
+        <span>Mikol Sanido</span> <br />
+        <span>
+          <FontAwesomeIcon icon={faLocationDot} size="xs" /> 34 Tipperary Drive
+        </span>
+        <br />
+        <span>
+          <FontAwesomeIcon icon={faPhone} size="xs" /> 843 2272026
+        </span>
+        <br />
+        <span>
+          <FontAwesomeIcon icon={faEnvelope} size="xs" /> fidelnieto02@gmail.com
+        </span>
+      </div>
+      <div className="edit-delete col-2 mt-2 mb-2">
+        <span>
+          {" "}
+          <button className="btn">
+            <FontAwesomeIcon icon={faPencil} size="xs" />
+          </button>{" "}
+          <button className="btn">
+            <FontAwesomeIcon icon={faTrash} size="xs" />
+          </button>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default ContactCard;
