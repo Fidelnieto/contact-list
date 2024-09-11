@@ -7,8 +7,6 @@ const Contact = () => {
     <div>
       <ButtonToAdd />
       <ContactCard />
-      <ContactCard />
-      <ContactCard />
     </div>
   );
 };

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 
 const AddContact = () => {
+
+  const {state, stateActions} = useContext(Context)
+
   return (
     <div className="text-center container">
       <h1>Add a new contact</h1>
@@ -17,12 +21,17 @@ const AddContact = () => {
             placeholder="Full Name"
             id="first-name"
             className="form-control"
+            onChange={event =>{
+              stateActions({type: "add", payload: { name: event.target.value}})
+            }}
           />
+          <span>{state.name}</span>
         </div>
         <div className="mb-3">
           <label
             htmlFor="email"
             className="form-label d-flex justify-content-start"
+            
           >
             Email
           </label>
@@ -31,7 +40,11 @@ const AddContact = () => {
             placeholder="Enter Email"
             className="form-control"
             id="email"
+            onChange={event =>{
+              stateActions({type: "add", payload: { email: event.target.value}})
+            }}
           />
+          <span>{state.email}</span>
         </div>
         <div className="mb-3">
           <label
@@ -45,7 +58,11 @@ const AddContact = () => {
             placeholder="Enter Phone"
             className="form-control"
             id="phoneNumber"
+            onChange={event =>{
+              stateActions({type: "add", payload: { phone: event.target.value}})
+            }}
           />
+          <span>{state.phone}</span>
         </div>
         <div className="mb-3">
           <label
@@ -59,7 +76,11 @@ const AddContact = () => {
             placeholder="Enter Address"
             className="form-control"
             id="address"
+            onChange={event =>{
+              stateActions({type: "add", payload: { address: event.target.value}})
+            }}
           />
+          <span>{state.address}</span>
         </div>
         <div>
           <input
