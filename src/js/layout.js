@@ -6,6 +6,7 @@ import injectContext from "./store/appContext";
 import Contact from "./views/Contact";
 import AddContact from "./views/AddContact";
 import NotFound from "./views/NotFound";
+import EditContact from "./views/EditContact";
 
 //create your first component
 const Layout = () => {
@@ -17,7 +18,8 @@ const Layout = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Contact />} />
-          <Route path="/createContact" element={<AddContact />} />
+          <Route path="/createContact" element={<AddContact />} />\
+          <Route path="/edit" element={<EditContact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -7,40 +7,60 @@ import {
   faPencil,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-
-import ButtonToAdd from "./ButtonToAdd";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router";
 
-const ContactCard = (props) => {
+const ContactCard = ({ contact }) => {
+  const { stateActions } = useContext(Context);
+  const navigate = useNavigate();
+
+  const handleOnClick = async (id) => {
+    try {
+      await fetch(
+        `https://playground.4geeks.com/contact/agendas/fidelnieto/contacts/${id}`,
+        { method: "DELETE" }
+      );
+
+      stateActions({
+        type: "remove",
+        payload: id,
+      });
+    } catch (error) {}
+  };
+
+  const handleOnClickEdit = async () => {
+    try {
+      navigate("/edit");
+    } catch (error) {}
+  };
 
   return (
-    <div className="row w-100 container border m-auto mt-1 p-1">
+    <div className="row w-100 container-fluid border m-auto mt-1 p-1">
       <div className="col-2">
         <img
           className="img-thumbnail photo mt-2 mb-2"
-          src="https://i.pinimg.com/564x/c6/89/95/c68995aa24906a1320b4d7d10aa374b2.jpg"
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
         />
       </div>
       <div className="info col-8 mt-3 mb-3 d-flex flex-column justify-content-evenly fs-3">
-        <span>Mikol Sanido</span> 
+        <span>{contact.name}</span>
         <span>
-          <FontAwesomeIcon icon={faLocationDot} size="xs" /> 34 Tipperary Drive
-        </span>       
-        <span>
-          <FontAwesomeIcon icon={faPhone} size="xs" /> 843 2272026
+          <FontAwesomeIcon icon={faLocationDot} size="xs" /> {contact.address}
         </span>
         <span>
-          <FontAwesomeIcon icon={faEnvelope} size="xs" /> fidelnieto02@gmail.com
+          <FontAwesomeIcon icon={faPhone} size="xs" /> {contact.phone}
+        </span>
+        <span>
+          <FontAwesomeIcon icon={faEnvelope} size="xs" /> {contact.email}
         </span>
       </div>
       <div className="edit-delete col-2 mt-2 mb-2">
         <span>
-          {" "}
-          <button className="btn">
-            <FontAwesomeIcon icon={faPencil}  />
-          </button>{" "}
-          <button className="btn">
-            <FontAwesomeIcon icon={faTrash}  />
+          <button className="btn" onClick={() => handleOnClickEdit()}>
+            <FontAwesomeIcon icon={faPencil} />
+          </button>
+          <button className="btn" onClick={() => handleOnClick(contact.id)}>
+            <FontAwesomeIcon icon={faTrash} />
           </button>
         </span>
       </div>

@@ -1,38 +1,38 @@
 import React, { useReducer } from "react";
 
 const initialContext = {
-	name: "",
-	email: "",
-	phone: "",
-	address: ""
-}
+  contacts: [],
+};
 
 export const Context = React.createContext(initialContext);
 
-
 export const Reducer = (state, action) => {
+  switch (action.type) {
+    case "setContacts":
+      return { ...state, contacts: action.payload.contacts };
 
-   switch (action.type) {
-	  case "add":
-		return {...state, ...action.payload};
-	  case "remove":
-		let newState=[...state]
-		delete newState(action.payload)
-		return newState
-	  default:
-		return state;
-	}
-  };
+    case "add":
+      return { ...state, contacts: [...state.contacts, action.payload] };
 
-export const Provider = ({ children }) => {
-	const [state, stateActions ]= useReducer(Reducer, initialContext);
-		
-		return (
-			<Context.Provider value={{state, stateActions}}>
-				{ children }
-			</Context.Provider>
-		);
+    case "remove":
+      return {
+        ...state,
+        contacts: state.contacts.filter(
+          (contact) => contact.id !== action.payload
+        ),
+      };
 
-
+    default:
+      return state;
+  }
 };
 
+export const Provider = ({ children }) => {
+  const [state, stateActions] = useReducer(Reducer, initialContext);
+
+  return (
+    <Context.Provider value={{ state, stateActions }}>
+      {children}
+    </Context.Provider>
+  );
+};

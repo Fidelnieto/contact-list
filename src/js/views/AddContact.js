@@ -1,17 +1,61 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 const AddContact = () => {
+  const { state, stateActions } = useContext(Context);
+  const navigate = useNavigate();
 
-  const {state, stateActions} = useContext(Context)
+  const [contact, setContact] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+
+  const handleChange = (e) => {
+    setContact({
+      ...contact,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (contact.phone.length > 8) {
+      alert("You cannot exceed 8 digits");
+    } else {
+      try {
+        const response = await fetch(
+          "https://playground.4geeks.com/contact/agendas/fidelnieto/contacts",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(contact),
+          }
+        );
+        const translatedResponse = await response.json();
+        console.log(translatedResponse);
+
+        stateActions({
+          type: "add",
+          payload: translatedResponse,
+        });
+        navigate("/");
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    }
+  };
 
   return (
     <div className="text-center container">
       <h1>Add a new contact</h1>
-      <form className="form">
+      <form className="form" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label
-            htmlFor="first-name"
+            htmlFor="name"
             className="form-label d-flex justify-content-start"
           >
             Full Name
@@ -19,19 +63,17 @@ const AddContact = () => {
           <input
             type="text"
             placeholder="Full Name"
-            id="first-name"
+            id="name"
             className="form-control"
-            onChange={event =>{
-              stateActions({type: "add", payload: { name: event.target.value}})
-            }}
+            value={contact.name}
+            onChange={handleChange}
+            required
           />
-          <span>{state.name}</span>
         </div>
         <div className="mb-3">
           <label
             htmlFor="email"
             className="form-label d-flex justify-content-start"
-            
           >
             Email
           </label>
@@ -40,15 +82,14 @@ const AddContact = () => {
             placeholder="Enter Email"
             className="form-control"
             id="email"
-            onChange={event =>{
-              stateActions({type: "add", payload: { email: event.target.value}})
-            }}
+            value={contact.email}
+            onChange={handleChange}
+            required
           />
-          <span>{state.email}</span>
         </div>
         <div className="mb-3">
           <label
-            htmlFor="phoneNumber"
+            htmlFor="phone"
             className="form-label d-flex justify-content-start "
           >
             Phone
@@ -57,12 +98,11 @@ const AddContact = () => {
             type="number"
             placeholder="Enter Phone"
             className="form-control"
-            id="phoneNumber"
-            onChange={event =>{
-              stateActions({type: "add", payload: { phone: event.target.value}})
-            }}
+            id="phone"
+            value={contact.phone}
+            onChange={handleChange}
+            required
           />
-          <span>{state.phone}</span>
         </div>
         <div className="mb-3">
           <label
@@ -76,17 +116,17 @@ const AddContact = () => {
             placeholder="Enter Address"
             className="form-control"
             id="address"
-            onChange={event =>{
-              stateActions({type: "add", payload: { address: event.target.value}})
-            }}
+            value={contact.address}
+            onChange={handleChange}
+            required
           />
-          <span>{state.address}</span>
         </div>
         <div>
           <input
             type="submit"
             value="Save"
             className="form-control btn btn-primary"
+            onSubmit={handleSubmit}
           />
         </div>
       </form>
