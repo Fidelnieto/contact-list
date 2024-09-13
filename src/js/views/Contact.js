@@ -36,7 +36,7 @@ const Contact = () => {
           <ContactCard key={index} contact={contact} />
         ))
       ) : (
-        <p>No contacts available.</p>
+        <p className="text-center mt-5">No contacts available.</p>
       )}
     </div>
   );

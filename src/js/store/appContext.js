@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 
 const initialContext = {
   contacts: [],
+  contactToEdit: null,
 };
 
 export const Context = React.createContext(initialContext);
@@ -20,6 +21,11 @@ export const Reducer = (state, action) => {
         contacts: state.contacts.filter(
           (contact) => contact.id !== action.payload
         ),
+      };
+    case "update":
+      return {
+        ...state,
+        contactToEdit: action.payload,
       };
 
     default:

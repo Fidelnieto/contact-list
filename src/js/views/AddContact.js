@@ -21,10 +21,11 @@ const AddContact = () => {
   };
 
   const handleSubmit = async () => {
-    if (contact.phone.length > 8) {
+    if (contact.phone.length > 10) {
       alert("You cannot exceed 8 digits");
     } else {
       try {
+        navigate("/");
         const response = await fetch(
           "https://playground.4geeks.com/contact/agendas/fidelnieto/contacts",
           {
@@ -42,7 +43,6 @@ const AddContact = () => {
           type: "add",
           payload: translatedResponse,
         });
-        navigate("/");
       } catch (error) {
         console.error("Error fetching contacts:", error);
       }
@@ -126,7 +126,6 @@ const AddContact = () => {
             type="submit"
             value="Save"
             className="form-control btn btn-primary"
-            onSubmit={handleSubmit}
           />
         </div>
       </form>

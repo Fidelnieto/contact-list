@@ -11,7 +11,7 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router";
 
 const ContactCard = ({ contact }) => {
-  const { stateActions } = useContext(Context);
+  const { state, stateActions } = useContext(Context);
   const navigate = useNavigate();
 
   const handleOnClick = async (id) => {
@@ -28,10 +28,16 @@ const ContactCard = ({ contact }) => {
     } catch (error) {}
   };
 
-  const handleOnClickEdit = async () => {
+  const handleOnClickEdit = async (id) => {
     try {
+      const contactToEdit = state.contacts.find((contact) => contact.id === id);
+      console.log("Contact to edit:", contactToEdit);
+      stateActions({ type: "update", payload: contactToEdit });
+
       navigate("/edit");
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -39,7 +45,7 @@ const ContactCard = ({ contact }) => {
       <div className="col-2">
         <img
           className="img-thumbnail photo mt-2 mb-2"
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+          src="https://i.pinimg.com/236x/2f/97/f0/2f97f05b32547f54ef1bdf99cd207c90.jpg"
         />
       </div>
       <div className="info col-8 mt-3 mb-3 d-flex flex-column justify-content-evenly fs-3">
@@ -56,10 +62,20 @@ const ContactCard = ({ contact }) => {
       </div>
       <div className="edit-delete col-2 mt-2 mb-2">
         <span>
-          <button className="btn" onClick={() => handleOnClickEdit()}>
+          <button className="btn" onClick={() => handleOnClickEdit(contact.id)}>
             <FontAwesomeIcon icon={faPencil} />
           </button>
-          <button className="btn" onClick={() => handleOnClick(contact.id)}>
+          <button
+            className="btn"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Are you sure you want to remove this contact? This could be awful"
+                )
+              )
+                handleOnClick(contact.id);
+            }}
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </span>
